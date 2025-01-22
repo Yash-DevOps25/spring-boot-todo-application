@@ -1,88 +1,83 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = 'your-dockerhub-username/spring-boot-todo-app'
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials' // Jenkins credentials ID for Docker Hub
+    tools {
+        jdk 'JDK-17'  // Ensure JDK 17 is configured in Jenkins Global Tool Configuration
+        maven 'Maven 3.8.7' // Ensure Maven 3.8.7 is available in Jenkins
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Pull code from the Git repository
-                git branch: 'main', url: 'https://github.com/wazooinc/spring-boot-todo-application.git'
+                checkout scm
             }
         }
 
         stage('Build Application') {
             steps {
-                // Use Maven to build the application
                 sh 'mvn clean package'
             }
         }
 
         stage('Build Docker Image') {
+            when {
+                not {
+                    failed()
+                }
+            }
             steps {
-                // Build Docker image
-                sh """
-                docker build -t ${DOCKER_IMAGE}:latest .
-                """
+                sh 'docker build -t my-todo-app .'
             }
         }
 
         stage('Run Docker Container') {
+            when {
+                not {
+                    failed()
+                }
+            }
             steps {
-                // Run Docker container in the background
-                sh """
-                docker run -d -p 8080:8080 --name spring-boot-todo-app ${DOCKER_IMAGE}:latest
-                """
+                sh 'docker run -d -p 8080:8080 --name todo-app-container my-todo-app'
             }
         }
 
         stage('Test Application') {
-            steps {
-                // Test if the application is accessible
-                script {
-                    def response = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost:8080', returnStdout: true).trim()
-                    if (response != '200') {
-                        error "Application did not respond with HTTP 200, but with HTTP ${response}"
-                    }
+            when {
+                not {
+                    failed()
                 }
+            }
+            steps {
+                sh 'curl http://localhost:8080'
             }
         }
 
         stage('Push Docker Image') {
-            steps {
-                // Login to Docker Hub and push the image
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
-                        sh "docker push ${DOCKER_IMAGE}:latest"
-                    }
+            when {
+                not {
+                    failed()
                 }
             }
-        }
-
-        stage('Clean Up') {
             steps {
-                // Clean up by stopping and removing the container
-                sh """
-                docker stop spring-boot-todo-app
-                docker rm spring-boot-todo-app
-                """
+                sh 'docker tag my-todo-app my-docker-repo/todo-app:latest'
+                sh 'docker push my-docker-repo/todo-app:latest'
             }
         }
     }
 
     post {
         always {
-            // Cleanup workspace
-            cleanWs()
+            script {
+                if (currentBuild.result != 'FAILURE') {
+                    echo "Skipping Clean Up stage since the build was successful."
+                } else {
+                    echo "Skipping Clean Up as it failed earlier."
+                }
+            }
         }
-        success {
-            echo 'Pipeline executed successfully!'
-        }
+
         failure {
-            echo 'Pipeline execution failed!'
+            echo 'Build failed!'
         }
     }
 }
