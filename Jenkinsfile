@@ -41,7 +41,18 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    sh 'docker build -t $DOCKER_IMAGE .'
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                script {
+                    // Log in to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                    }
                 }
             }
         }
@@ -50,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Push Docker image to the registry
-                    sh 'docker push $DOCKER_IMAGE'
+                    sh "docker push ${DOCKER_IMAGE}"
                 }
             }
         }
