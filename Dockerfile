@@ -1,4 +1,4 @@
-# Use the Maven 3.9.0 with OpenJDK 17 image as base
+# Use the Apache Maven 3.8.7 with OpenJDK 17 image as base
 FROM apache maven:3.8.7-openjdk-17 AS builder
 
 # Set the working directory inside the container
