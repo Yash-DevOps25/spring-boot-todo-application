@@ -1,5 +1,5 @@
 # Use the Maven 3.9.0 with OpenJDK 17 image as base
-FROM maven:3.9.0-openjdk-17 AS builder
+FROM apache maven:3.8.7-openjdk-17 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
