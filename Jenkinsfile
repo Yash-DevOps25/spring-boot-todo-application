@@ -9,7 +9,7 @@ pipeline {
 
     tools {
         jdk 'JDK-17' // Ensure this matches the JDK name in your Jenkins tool configuration
-        maven 'Maven-3.8.7' // Ensure this matches the Maven tool name in Jenkins
+        maven 'Maven 3.8.7' // Ensure this matches the Maven tool name in Jenkins
     }
 
     stages {
@@ -94,3 +94,4 @@ pipeline {
         }
     }
 }
+
