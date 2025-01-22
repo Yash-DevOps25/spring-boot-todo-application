@@ -24,4 +24,4 @@ COPY --from=builder /app/target/*.jar /app/your-app.jar
 ENTRYPOINT ["java", "-jar", "/app/your-app.jar"]
 
 # Expose port 8080 (if your application runs on this port)
-EXPOSE 8080
+EXPOSE 8000
