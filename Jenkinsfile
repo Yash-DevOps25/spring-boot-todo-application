@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'yash/spring-boot-todo-app'
+        DOCKER_IMAGE = 'yashguj20/spring-boot-todo-app' // Updated to use your Docker Hub username
         REGISTRY = 'docker.io'
         GIT_URL = 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
     }
