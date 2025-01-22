@@ -1,5 +1,13 @@
-# Use a Maven image with JDK 17 for building
-FROM maven:3.8.7-openjdk-17 AS builder
+# Use OpenJDK 17 image as base
+FROM openjdk:17-jdk-slim AS builder
+
+# Install Maven 3.8.7 manually
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget https://downloads.apache.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz && \
+    tar -xvzf apache-maven-3.8.7-bin.tar.gz && \
+    mv apache-maven-3.8.7 /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/bin/mvn
 
 # Set the working directory inside the container
 WORKDIR /app
