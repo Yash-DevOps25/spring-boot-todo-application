@@ -1,21 +1,23 @@
-# Use a Maven image with JDK 17
-FROM maven:3.8.7-openjdk-17 AS builder
+# Use OpenJDK 17 as the base image
+FROM openjdk:17-jdk-slim AS builder
+
+# Install Maven
+RUN apt-get update && apt-get install -y maven
 
 # Set working directory
 WORKDIR /app
 
-# Copy only the pom.xml and resolve dependencies (this allows caching)
-COPY pom.xml .
-RUN mvn dependency:resolve
+# Copy your Maven project files
+COPY . .
 
-# Now copy the source code and build the project
-COPY src ./src
-RUN mvn clean package -DskipTests
+# Build the project using Maven
+RUN mvn clean package
 
-# Use a lightweight Java image to run the application
+# Use a lighter base image for the final image
 FROM openjdk:17-jdk-slim
-WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Copy the built jar file from the builder image
+COPY --from=builder /app/target/your-app.jar /app/your-app.jar
+
+# Set the entrypoint for the application
+ENTRYPOINT ["java", "-jar", "/app/your-app.jar"]
