@@ -1,18 +1,15 @@
-# Use a different Maven image that is available
+# Use a Maven image with OpenJDK 17
 FROM maven:3.8.4-openjdk-17-slim AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy the pom.xml and the source code
-COPY pom.xml /app/
-COPY src /app/src
+COPY pom.xml .
+COPY src ./src
 
 # Build the application (this will create the target/ directory with the JAR)
 RUN mvn clean package
-
-# List the files in the target directory to verify the JAR file's existence
-RUN ls -alh /app/target/
 
 # Create the final image for running the application
 FROM openjdk:17-jdk-slim
