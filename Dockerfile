@@ -1,23 +1,30 @@
-# Use OpenJDK 17 as the base image
-FROM openjdk:17-jdk-slim AS builder
+# Use a Maven image with JDK 17 for building
+FROM maven:3.8.7-openjdk-17 AS builder
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven
-
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy your Maven project files
-COPY . .
+# Copy the pom.xml and the source code
+COPY pom.xml /app/
+COPY src /app/src
 
-# Build the project using Maven
+# Build the application (this will create the target/ directory with the JAR)
 RUN mvn clean package
 
-# Use a lighter base image for the final image
+# List the files in the target directory to verify the JAR file's existence
+RUN ls -alh /app/target/
+
+# Create the final image for running the application
 FROM openjdk:17-jdk-slim
 
-# Copy the built jar file from the builder image
-COPY --from=builder /app/target/your-app.jar /app/your-app.jar
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the built JAR file from the builder image
+COPY --from=builder /app/target/*.jar /app/your-app.jar
 
 # Set the entrypoint for the application
 ENTRYPOINT ["java", "-jar", "/app/your-app.jar"]
+
+# Expose port 8080 (if your application runs on this port)
+EXPOSE 8080
