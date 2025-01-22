@@ -1,97 +1,87 @@
 pipeline {
     agent any
 
-    environment {
-        // Ensure the paths to JDK and Maven are correctly configured
-        MAVEN_HOME = '/opt/apache-maven-3.8.7'
-        JDK_HOME = '/usr/lib/jvm/java-17-openjdk'
+    tools {
+        // Ensure Maven and JDK are installed and configured in Jenkins
+        maven 'Maven-3.8.7'
+        jdk 'JDK-17'
     }
 
-    tools {
-        jdk 'JDK-17' // Ensure this matches the JDK name in your Jenkins tool configuration
-        maven 'Maven 3.8.7' // Ensure this matches the Maven tool name in Jenkins
+    environment {
+        // Define the Docker image name for your app
+        DOCKER_IMAGE = 'yourdockerhubusername/spring-boot-todo-app'
     }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
-                checkout scm
+                // Checkout the latest code from the Git repository
+                git 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
             }
         }
 
         stage('Build') {
             steps {
+                // Build the project using Maven, skipping tests for speed
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run the tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
                 script {
-                    // Increase the build timeout to avoid early timeouts
-                    timeout(time: 1, unit: 'HOURS') {
-                        sh '''
-                            echo "Building the application"
-                            mvn clean package
-                        '''
+                    // Build the Docker image
+                    sh "docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} ."
+                }
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                script {
+                    // Login to Docker Hub and push the image
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
+                        sh "docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
                     }
                 }
             }
         }
 
-        stage('Docker Build') {
-            when {
-                expression {
-                    return currentBuild.result == 'SUCCESS'
-                }
-            }
+        stage('Clean Up') {
             steps {
-                script {
-                    // Docker build commands here
-                    echo 'Building Docker image...'
-                    sh '''
-                        docker build -t spring-boot-todo-app .
-                    '''
-                }
-            }
-        }
-
-        stage('Docker Run') {
-            when {
-                expression {
-                    return currentBuild.result == 'SUCCESS'
-                }
-            }
-            steps {
-                script {
-                    // Docker run commands here
-                    echo 'Running Docker container...'
-                    sh '''
-                        docker run -d -p 8080:8080 spring-boot-todo-app
-                    '''
-                }
-            }
-        }
-
-        stage('Test') {
-            when {
-                expression {
-                    return currentBuild.result == 'SUCCESS'
-                }
-            }
-            steps {
-                script {
-                    // Example test command
-                    echo 'Running tests...'
-                    sh '''
-                        mvn test
-                    '''
-                }
+                // Clean up unused Docker images to free up space
+                sh 'docker system prune -f'
             }
         }
     }
 
     post {
-        success {
-            echo 'Build and Docker stages completed successfully!'
+        always {
+            // Archive the build artifacts (logs, etc.)
+            archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
+
+            // Notify on build status
+            mail to: 'you@example.com',
+                 subject: "Jenkins Build ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+                 body: "Build result: ${currentBuild.result}\nCheck console output at ${env.BUILD_URL}"
         }
+
+        success {
+            // Send success notification or perform post-build actions
+            echo 'Build succeeded!'
+        }
+
         failure {
+            // Send failure notification or perform cleanup actions
             echo 'Build failed!'
         }
     }
 }
-
