@@ -1,74 +1,96 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK-17' // Ensure this matches the JDK name in your Jenkins tool configuration
-        maven 'Maven 3.8.7' // Ensure this matches the Maven name in your Jenkins tool configuration
+    environment {
+        // Ensure the paths to JDK and Maven are correctly configured
+        MAVEN_HOME = '/opt/apache-maven-3.8.7'
+        JDK_HOME = '/usr/lib/jvm/java-17-openjdk'
     }
 
-    environment {
-        DOCKER_IMAGE = 'my-app-image' // Define your Docker image name here
+    tools {
+        jdk 'JDK-17' // Ensure this matches the JDK name in your Jenkins tool configuration
+        maven 'Maven-3.8.7' // Ensure this matches the Maven tool name in Jenkins
     }
 
     stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
-                    try {
-                        // Build the application using Maven
-                        sh 'mvn package'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE' // Mark the build as failed
-                        throw e // Re-throw to fail the build
+                    // Increase the build timeout to avoid early timeouts
+                    timeout(time: 1, unit: 'HOURS') {
+                        sh '''
+                            echo "Building the application"
+                            mvn clean package
+                        '''
                     }
                 }
             }
         }
-        
+
         stage('Docker Build') {
+            when {
+                expression {
+                    return currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
                 script {
-                    try {
-                        // Build Docker image
-                        sh 'docker build -t ${DOCKER_IMAGE} .'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE' // Mark the build as failed if Docker fails
-                        throw e // Re-throw to fail the build
-                    }
+                    // Docker build commands here
+                    echo 'Building Docker image...'
+                    sh '''
+                        docker build -t spring-boot-todo-app .
+                    '''
                 }
             }
         }
-        
+
         stage('Docker Run') {
+            when {
+                expression {
+                    return currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
                 script {
-                    try {
-                        // Run Docker container (adjust command as necessary)
-                        sh 'docker run -d -p 8080:8080 ${DOCKER_IMAGE}'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE' // Mark the build as failed if Docker run fails
-                        throw e // Re-throw to fail the build
-                    }
+                    // Docker run commands here
+                    echo 'Running Docker container...'
+                    sh '''
+                        docker run -d -p 8080:8080 spring-boot-todo-app
+                    '''
                 }
             }
         }
-        
+
         stage('Test') {
+            when {
+                expression {
+                    return currentBuild.result == 'SUCCESS'
+                }
+            }
             steps {
                 script {
-                    if (currentBuild.result == 'FAILURE') {
-                        error 'Build failed, skipping tests.'
-                    }
-                    // Add your testing steps here
+                    // Example test command
+                    echo 'Running tests...'
+                    sh '''
+                        mvn test
+                    '''
                 }
             }
         }
     }
 
     post {
+        success {
+            echo 'Build and Docker stages completed successfully!'
+        }
         failure {
             echo 'Build failed!'
-            // Additional actions for failure (e.g., notifications)
         }
     }
 }
