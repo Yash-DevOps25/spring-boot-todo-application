@@ -16,7 +16,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the latest code from the Git repository
-                git 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
+               git branch: 'main', url: 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
+
             }
         }
 
@@ -63,16 +64,16 @@ pipeline {
         }
     }
 
-    post {
-        always {
+  //  post {
+   //     always {
             // Archive the build artifacts (logs, etc.)
-            archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
+       //     archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
 
             // Notify on build status
-            mail to: 'you@example.com',
-                 subject: "Jenkins Build ${currentBuild.fullDisplayName} - ${currentBuild.result}",
-                 body: "Build result: ${currentBuild.result}\nCheck console output at ${env.BUILD_URL}"
-        }
+      //      mail to: 'you@example.com',
+       //          subject: "Jenkins Build ${currentBuild.fullDisplayName} - ${currentBuild.result}",
+        //        body: "Build result: ${currentBuild.result}\nCheck console output at ${env.BUILD_URL}"
+        //}
 
         success {
             // Send success notification or perform post-build actions
