@@ -1,5 +1,5 @@
-# Use the Maven 3.8.7 with OpenJDK 17 image as base
-FROM maven:3.8.7-openjdk-17-slim AS builder
+# Use a different Maven image that is available
+FROM maven:3.8.4-openjdk-17-slim AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
