@@ -2,82 +2,73 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK-17'  // Ensure JDK 17 is configured in Jenkins Global Tool Configuration
-        maven 'Maven 3.8.7' // Ensure Maven 3.8.7 is available in Jenkins
+        jdk 'JDK 17' // Ensure this matches the JDK name in your Jenkins tool configuration
+        maven 'Maven 3.8.7' // Ensure this matches the Maven name in your Jenkins tool configuration
+    }
+
+    environment {
+        DOCKER_IMAGE = 'my-app-image' // Define your Docker image name here
     }
 
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Application') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        stage('Build Docker Image') {
-            when {
-                not {
-                    failed()
+                script {
+                    try {
+                        // Build the application using Maven
+                        sh 'mvn package'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE' // Mark the build as failed
+                        throw e // Re-throw to fail the build
+                    }
                 }
             }
-            steps {
-                sh 'docker build -t my-todo-app .'
-            }
         }
-
-        stage('Run Docker Container') {
-            when {
-                not {
-                    failed()
+        
+        stage('Docker Build') {
+            steps {
+                script {
+                    try {
+                        // Build Docker image
+                        sh 'docker build -t ${DOCKER_IMAGE} .'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE' // Mark the build as failed if Docker fails
+                        throw e // Re-throw to fail the build
+                    }
                 }
             }
-            steps {
-                sh 'docker run -d -p 8080:8080 --name todo-app-container my-todo-app'
-            }
         }
-
-        stage('Test Application') {
-            when {
-                not {
-                    failed()
+        
+        stage('Docker Run') {
+            steps {
+                script {
+                    try {
+                        // Run Docker container (adjust command as necessary)
+                        sh 'docker run -d -p 8080:8080 ${DOCKER_IMAGE}'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE' // Mark the build as failed if Docker run fails
+                        throw e // Re-throw to fail the build
+                    }
                 }
             }
-            steps {
-                sh 'curl http://localhost:8080'
-            }
         }
-
-        stage('Push Docker Image') {
-            when {
-                not {
-                    failed()
-                }
-            }
+        
+        stage('Test') {
             steps {
-                sh 'docker tag my-todo-app my-docker-repo/todo-app:latest'
-                sh 'docker push my-docker-repo/todo-app:latest'
+                script {
+                    if (currentBuild.result == 'FAILURE') {
+                        error 'Build failed, skipping tests.'
+                    }
+                    // Add your testing steps here
+                }
             }
         }
     }
 
     post {
-        always {
-            script {
-                if (currentBuild.result != 'FAILURE') {
-                    echo "Skipping Clean Up stage since the build was successful."
-                } else {
-                    echo "Skipping Clean Up as it failed earlier."
-                }
-            }
-        }
-
         failure {
             echo 'Build failed!'
+            // Additional actions for failure (e.g., notifications)
         }
     }
 }
