@@ -1,13 +1,5 @@
-# Use OpenJDK 17 image as base
-FROM openjdk:17-jdk-slim AS builder
-
-# Install Maven (latest stable version)
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget https://mirror.serverion.com/apache/maven/maven-3/3.9.0/binaries/apache-maven-3.9.0-bin.tar.gz && \
-    tar -xvzf apache-maven-3.9.0-bin.tar.gz && \
-    mv apache-maven-3.9.0 /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/bin/mvn
+# Use the Maven 3.9.0 with OpenJDK 17 image as base
+FROM maven:3.9.0-openjdk-17 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
