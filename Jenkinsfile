@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'yashguj20/spring-boot-todo-app' // Updated to use your Docker Hub username
+        DOCKER_IMAGE = 'yashguj20/spring-boot-todo-app' // Docker Hub username and repository name
         REGISTRY = 'docker.io'
         GIT_URL = 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Set JAVA_HOME to Java 17 path
     }
 
     tools {
-        // Specify Maven version
-        maven 'Apache Maven 3.8.7'
+        maven 'Apache Maven 3.8.7' // Maven version specified in Jenkins
     }
 
     stages {
@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     // Log in to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
                     }
                 }
