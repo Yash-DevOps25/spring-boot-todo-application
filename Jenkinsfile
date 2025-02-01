@@ -10,7 +10,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'  // Your repo
+                git branch: 'main', url: 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
+// Your repo
             }
         }
 
