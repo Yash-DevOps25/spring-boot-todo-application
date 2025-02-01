@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - TCS-ION TO DO App</title>
+    <title>Update To-Do Item - TCS-ION TO DO App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -39,92 +39,11 @@
         }
 
         .logo-container img {
-            max-width: 250px; /* Increased the size of the logo */
+            max-width: 250px;
             height: auto;
         }
 
-        .todo-container {
-            width: 100%;
-            max-width: 800px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .task-item {
-            background: #f1f1f1;
-            padding: 20px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .task-item:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .task-item.important {
-            background: #f39c12;
-            color: white;
-            border-left: 8px solid #e74c3c;
-        }
-
-        .task-description {
-            font-size: 1.2rem;
-        }
-
-        .task-progress {
-            width: 100%;
-            height: 8px;
-            background-color: #ddd;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .task-progress-bar {
-            height: 100%;
-            background-color: #2ecc71;
-            border-radius: 6px;
-        }
-
-        .task-start-date {
-            font-size: 1rem;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-
-        .task-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .task-actions a {
-            color: #3498db;
-            text-decoration: none;
-            font-size: 1.5rem;
-        }
-
-        .task-actions a.delete {
-            color: #e74c3c;
-        }
-
-        .task-actions a.edit:hover {
-            color: #f39c12;
-        }
-
-        .new-task-form {
+        .update-task-form {
             display: flex;
             flex-direction: column;
             gap: 25px;
@@ -134,8 +53,8 @@
             max-width: 500px;
         }
 
-        .new-task-form select,
-        .new-task-form input[type="text"] {
+        .update-task-form select,
+        .update-task-form input[type="text"] {
             padding: 14px;
             font-size: 1.2rem;
             border-radius: 8px;
@@ -145,7 +64,7 @@
             max-width: 100%;
         }
 
-        .new-task-form input[type="submit"] {
+        .update-task-form input[type="submit"] {
             padding: 14px 40px;
             background-color: #2ecc71;
             border: none;
@@ -158,7 +77,7 @@
             transition: background-color 0.3s;
         }
 
-        .new-task-form input[type="submit"]:hover {
+        .update-task-form input[type="submit"]:hover {
             background-color: #27ae60;
         }
 
@@ -169,42 +88,14 @@
             color: #7f8c8d;
         }
 
-        .add-task-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #2ecc71;
-            color: #fff;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
         @media (max-width: 768px) {
-            .todo-container {
+            .update-task-form {
                 padding: 20px;
                 max-width: 90%;
             }
 
             h1 {
                 font-size: 2rem;
-            }
-
-            .new-task-form input[type="text"] {
-                font-size: 1.1rem;
-            }
-
-            .task-item {
-                padding: 15px;
-            }
-
-            .task-progress {
-                height: 6px;
             }
         }
     </style>
@@ -216,11 +107,12 @@
         <img src="https://evessio.s3.amazonaws.com/customer/f6ac7efa-3821-45db-b7e9-604a1025db1f/event/d3d85cc9-ac6d-456d-8352-454ef5ba5451/media/309157e4-profile_TCS-logo-1024x768-1-optimized.jpg_Large.webp" alt="TCS-iON Logo">
     </div>
 
-    <h1>TCS-ION Internship Project To Do List</h1>
+    <h1>Update To-Do Item</h1>
 
-    <!-- New task form at the top, centered -->
-    <div class="new-task-form">
-        <form action="/todo/add/" method="post">
+    <div class="update-task-form">
+        <!-- This form would allow you to update the task details -->
+        <form action="http://localhost:8081/todo/update/{task_id}" method="post">
+            <label for="task-select">Select Task</label>
             <select id="task-select" name="task">
                 <option value="task1">Task NO.1 - Make CICD Pipeline</option>
                 <option value="task2">Task NO.2 - Project Report</option>
@@ -228,45 +120,14 @@
                 <option value="task4">Task NO.4 - Activity Report</option>
             </select>
 
-            <!-- Custom Task Input -->
-            <input type="text" name="custom-task" placeholder="Enter a custom task" />
+            <label for="custom-task">Custom Task Description</label>
+            <input type="text" name="custom-task" id="custom-task" placeholder="Enter a custom task" value="">
 
-            <input type="submit" value="Add Task" />
+            <label for="task-progress">Task Progress (in %)</label>
+            <input type="number" name="task-progress" id="task-progress" min="0" max="100" placeholder="Enter progress" value="50">
+
+            <input type="submit" value="Update Task" />
         </form>
-    </div>
-
-    <div class="todo-container">
-        <div class="task-list">
-            <!-- Example of task with progress, start date, and importance -->
-            <div class="task-item important">
-                <div class="task-description">
-                    Task NO.1 - Make CICD Pipeline
-                </div>
-                <div class="task-progress">
-                    <div class="task-progress-bar" style="width: 50%"></div>
-                </div>
-                <div class="task-start-date">Start Date: 2025-02-01</div>
-                <div class="task-actions">
-                    <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i></a>
-                    <a class="delete" href="/todo/delete/1"><i class="fas fa-trash"></i></a>
-                </div>
-            </div>
-
-            <!-- Repeat for more tasks -->
-            <div class="task-item">
-                <div class="task-description">
-                    Task NO.2 - Project Report
-                </div>
-                <div class="task-progress">
-                    <div class="task-progress-bar" style="width: 30%"></div>
-                </div>
-                <div class="task-start-date">Start Date: 2025-02-05</div>
-                <div class="task-actions">
-                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i></a>
-                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash"></i></a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="footer">
