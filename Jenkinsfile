@@ -24,7 +24,7 @@ pipeline {
                     
                     // Login to DockerHub and push the image
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push your-dockerhub-username/spring-boot-todo-app'
+                    sh 'docker push your-dockerhub-yashguj20/spring-boot-todo-app'
                 }
             }
         }
