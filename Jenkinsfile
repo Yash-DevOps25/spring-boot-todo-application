@@ -2,36 +2,35 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins credentials ID for DockerHub
-        DOCKER_IMAGE_NAME = 'yashguj20/spring-boot-todo-app' // DockerHub username/repo
+        IMAGE_NAME = "your-docker-image"   // Replace with your actual image name
+        CONTAINER_NAME = "springboot-todo-app"
+        COMPOSE_FILE = "docker-compose.yml"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clone the GitHub repository
-                git branch: 'main', url: 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
+                git 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'  // Your repo
             }
         }
 
-        stage('Build') {
-            steps {
-                // Build the Spring Boot application using Maven
-                sh 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('Docker Build & Push') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image
-                    sh 'docker build -t $DOCKER_IMAGE_NAME .'
+                    sh '''
+                        docker build -t $IMAGE_NAME .
+                    '''
+                }
+            }
+        }
 
-                    // Login to DockerHub
-                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-
-                    // Push the Docker image to DockerHub
-                    sh 'docker push $DOCKER_IMAGE_NAME'
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    sh '''
+                        docker tag $IMAGE_NAME your-dockerhub-user/$IMAGE_NAME:latest
+                        docker push your-dockerhub-user/$IMAGE_NAME:latest
+                    '''
                 }
             }
         }
@@ -39,8 +38,11 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Run Docker Compose (build and up the containers)
-                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh '''
+                        docker stop $CONTAINER_NAME || true
+                        docker rm $CONTAINER_NAME || true
+                        docker-compose -f $COMPOSE_FILE up -d
+                    '''
                 }
             }
         }
@@ -48,10 +50,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully!'
+            echo "Deployment Successful!"
         }
         failure {
-            echo 'Pipeline failed. Check the logs for errors.'
+            echo "Pipeline failed. Check the logs for errors."
         }
     }
 }
