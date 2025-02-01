@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+            background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
             color: #333;
             padding: 40px;
             display: flex;
@@ -79,10 +79,20 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .task-item.important {
-            background: #ff6f61;
-            color: white;
-            border-left: 8px solid #e74c3c;
+        /* Unique Backgrounds for Task Types */
+        .task-item.activity-report {
+            background: #ffebee; /* Light red for Activity Report */
+            border-left: 8px solid #ef5350;
+        }
+
+        .task-item.interim-report {
+            background: #e3f2fd; /* Light blue for Interim Report */
+            border-left: 8px solid #42a5f5;
+        }
+
+        .task-item.project-test {
+            background: #e8f5e9; /* Light green for Project Test and Viva */
+            border-left: 8px solid #66bb6a;
         }
 
         .task-description {
@@ -248,10 +258,10 @@
                 <label for="task-name">Task Name</label>
             </div>
             <div class="form-group">
-                <select id="task-priority" name="priority">
-                    <option value="low">Low Priority</option>
-                    <option value="medium">Medium Priority</option>
-                    <option value="high">High Priority</option>
+                <select id="task-type" name="task-type">
+                    <option value="activity-report">Activity Report</option>
+                    <option value="interim-report">Interim Report</option>
+                    <option value="project-test">Project Test and Viva</option>
                 </select>
             </div>
             <input type="submit" value="Add Task">
@@ -261,9 +271,9 @@
     <!-- Task List -->
     <div class="todo-container">
         <div class="task-list">
-            <div class="task-item important">
+            <div class="task-item activity-report">
                 <div class="task-description">
-                    Task NO.1 - Make CICD Pipeline <span>🚀</span>
+                    Task NO.1 - Activity Report <span>📊</span>
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 50%"></div>
@@ -276,9 +286,9 @@
                 </div>
             </div>
 
-            <div class="task-item">
+            <div class="task-item interim-report">
                 <div class="task-description">
-                    Task NO.2 - Project Report <span>📑</span>
+                    Task NO.2 - Interim Report <span>📑</span>
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 30%"></div>
@@ -288,6 +298,21 @@
                 <div class="task-actions">
                     <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/2"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
+
+            <div class="task-item project-test">
+                <div class="task-description">
+                    Task NO.3 - Project Test and Viva <span>🎓</span>
+                </div>
+                <div class="task-progress">
+                    <div class="task-progress-bar" style="width: 70%"></div>
+                </div>
+                <div class="task-start-date">Start Date: 10/02/2025</div>
+                <div class="task-start-date">Mentioned By: Debashish Roy</div>
+                <div class="task-actions">
+                    <a href="/todo/edit/3"><i class="fas fa-pencil-alt"></i></a>
+                    <a class="delete" href="/todo/delete/3"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
         </div>
