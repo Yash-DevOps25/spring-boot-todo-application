@@ -18,12 +18,17 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
+            background-image: url('path/to/pencil-icon.svg'), url('path/to/notepad-icon.svg');
+            background-position: left top, right bottom; /* Place icons where you want them */
+            background-repeat: no-repeat;
+            background-size: 100px, 120px; /* Size the icons */
             color: #333;
             padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
+            background-attachment: fixed; /* Keeps background icons static while scrolling */
         }
 
         h1 {
