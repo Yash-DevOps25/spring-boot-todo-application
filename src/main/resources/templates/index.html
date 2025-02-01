@@ -18,10 +18,6 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
-            background-image: url('path-to-your-image/pencil-icon.png'), url('path-to-your-image/notepad-icon.png');
-            background-repeat: no-repeat;
-            background-size: 100px 100px, 120px 120px;  /* Icons size */
-            background-position: 5% 5%, 80% 80%;  /* Icons position */
             color: #333;
             padding: 40px;
             display: flex;
@@ -57,7 +53,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
             position: relative;
-            z-index: 5; /* Main content Z-index */
+            z-index: 5;
         }
 
         .task-list {
@@ -110,6 +106,13 @@
             font-size: 1rem;
             color: #7f8c8d;
             margin-top: 5px;
+        }
+
+        .task-mentioned-by {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-weight: 600;
         }
 
         .task-actions {
@@ -194,28 +197,6 @@
             color: #7f8c8d;
         }
 
-        /* Floating icons */
-        .floating-icons {
-            position: fixed;
-            z-index: 10;
-        }
-
-        .floating-icons img {
-            width: 40px;
-            height: 40px;
-            margin: 10px;
-        }
-
-        .pencil-icon {
-            top: 15%;
-            left: 5%;
-        }
-
-        .notepad-icon {
-            top: 80%;
-            right: 5%;
-        }
-
         /* Mobile responsive */
         @media (max-width: 768px) {
             .todo-container {
@@ -242,16 +223,6 @@
             .floating-icons img {
                 width: 30px;
                 height: 30px;
-            }
-
-            .pencil-icon {
-                top: 10%;
-                left: 5%;
-            }
-
-            .notepad-icon {
-                top: 70%;
-                right: 5%;
             }
         }
     </style>
@@ -291,6 +262,7 @@
                     <div class="task-progress-bar" style="width: 50%"></div>
                 </div>
                 <div class="task-start-date">Start Date: 26/01/2025</div>
+                <div class="task-mentioned-by">Mentioned By: Debashish Roy</div>
                 <div class="task-actions">
                     <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/1"><i class="fas fa-trash"></i></a>
@@ -305,6 +277,7 @@
                     <div class="task-progress-bar" style="width: 30%"></div>
                 </div>
                 <div class="task-start-date">Start Date: 01/02/2025</div>
+                <div class="task-mentioned-by">Mentioned By: Debashish Roy</div>
                 <div class="task-actions">
                     <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/2"><i class="fas fa-trash"></i></a>
@@ -320,12 +293,6 @@
     <!-- Floating Add Task Button -->
     <div class="add-task-btn">
         <i class="fas fa-plus"></i>
-    </div>
-
-    <!-- Floating icons -->
-    <div class="floating-icons">
-        <img src="path-to-your-image/pencil-icon.png" class="pencil-icon" alt="Pencil">
-        <img src="path-to-your-image/notepad-icon.png" class="notepad-icon" alt="Notepad">
     </div>
 
 </body>
