@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Jenkins credentials ID for DockerHub
-        DOCKER_IMAGE_NAME = 'yashguj20/spring-boot-todo-app' // Replace with your DockerHub username/repo
+        DOCKER_IMAGE_NAME = 'yashguj20/spring-boot-todo-app' // DockerHub username/repo
     }
 
     stages {
@@ -36,12 +36,11 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Deploy using Docker (Optional)
-                    // Here, it assumes you're using Docker Compose or just running the container directly
-                    sh 'docker run -d -p 8080:8080 $DOCKER_IMAGE_NAME'
+                    // Run Docker Compose (build and up the containers)
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
