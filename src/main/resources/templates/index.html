@@ -18,6 +18,10 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
+            background-image: url('path-to-your-image/pencil-icon.png'), url('path-to-your-image/notepad-icon.png');
+            background-repeat: no-repeat;
+            background-size: 100px 100px, 120px 120px;  /* Icons size */
+            background-position: 5% 5%, 80% 80%;  /* Icons position */
             color: #333;
             padding: 40px;
             display: flex;
@@ -52,6 +56,8 @@
             padding: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+            position: relative;
+            z-index: 5; /* Main content Z-index */
         }
 
         .task-list {
@@ -178,6 +184,7 @@
             align-items: center;
             font-size: 2rem;
             cursor: pointer;
+            z-index: 10;
         }
 
         .footer {
@@ -187,6 +194,29 @@
             color: #7f8c8d;
         }
 
+        /* Floating icons */
+        .floating-icons {
+            position: fixed;
+            z-index: 10;
+        }
+
+        .floating-icons img {
+            width: 40px;
+            height: 40px;
+            margin: 10px;
+        }
+
+        .pencil-icon {
+            top: 15%;
+            left: 5%;
+        }
+
+        .notepad-icon {
+            top: 80%;
+            right: 5%;
+        }
+
+        /* Mobile responsive */
         @media (max-width: 768px) {
             .todo-container {
                 padding: 20px;
@@ -207,6 +237,21 @@
 
             .task-progress {
                 height: 6px;
+            }
+
+            .floating-icons img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .pencil-icon {
+                top: 10%;
+                left: 5%;
+            }
+
+            .notepad-icon {
+                top: 70%;
+                right: 5%;
             }
         }
     </style>
@@ -275,6 +320,12 @@
     <!-- Floating Add Task Button -->
     <div class="add-task-btn">
         <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Floating icons -->
+    <div class="floating-icons">
+        <img src="path-to-your-image/pencil-icon.png" class="pencil-icon" alt="Pencil">
+        <img src="path-to-your-image/notepad-icon.png" class="notepad-icon" alt="Notepad">
     </div>
 
 </body>
