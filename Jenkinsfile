@@ -24,14 +24,12 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    // Build the Docker image
-                    sh 'docker build -t $DOCKER_IMAGE_NAME .'
-
                     // Login to DockerHub
                     sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
 
-                    // Push the Docker image to DockerHub
-                    sh 'docker push $DOCKER_IMAGE_NAME'
+                    // Build and push the Docker image using Docker Compose
+                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'docker-compose -f docker-compose.yml push'
                 }
             }
         }
@@ -39,7 +37,10 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Run Docker Compose (build and up the containers)
+                    // Stop and remove existing containers to prevent conflicts
+                    sh 'docker-compose -f docker-compose.yml down'
+
+                    // Deploy the application
                     sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
