@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "your-docker-image"   // Replace with your actual image name
+        IMAGE_NAME = "yashguj20/spring-boot-todo-app"   // Replace with your actual image name
         CONTAINER_NAME = "springboot-todo-app"
         COMPOSE_FILE = "docker-compose.yml"
     }
