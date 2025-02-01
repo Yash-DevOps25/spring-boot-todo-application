@@ -44,6 +44,21 @@
         .logo-container img {
             max-width: 250px;
             height: auto;
+            border-radius: 50%; /* Circular container */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05); /* Hover effect */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-container p {
+            font-size: 1.2rem;
+            color: #34495e;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
         .todo-container {
@@ -271,6 +286,7 @@
 
     <div class="logo-container">
         <img src="https://evessio.s3.amazonaws.com/customer/f6ac7efa-3821-45db-b7e9-604a1025db1f/event/d3d85cc9-ac6d-456d-8352-454ef5ba5451/media/309157e4-profile_TCS-logo-1024x768-1-optimized.jpg_Large.webp" alt="TCS-iON Logo">
+        <p>Innovating Excellence</p> <!-- Tagline -->
     </div>
 
     <h1>TCS-ION Project Planner: Track, Manage, Achieve!</h1>
