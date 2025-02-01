@@ -60,14 +60,32 @@
         }
 
         .task-item.important {
-            background-color: #f39c12;
+            background-color: #ffbc00;
             color: white;
             border-left: 8px solid #e74c3c;
         }
 
         .task-item.highlight {
-            background-color: #2ecc71;
+            background-color: #81c7ff; /* Soft Blue Highlight */
             color: white;
+        }
+
+        .task-description {
+            font-size: 1.2rem;
+        }
+
+        .task-progress {
+            width: 100%;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .task-progress-bar {
+            height: 100%;
+            background-color: #2ecc71; /* Green for Progress */
+            border-radius: 6px;
         }
 
         .task-actions a {
@@ -171,15 +189,18 @@
     <div class="todo-container">
         <div class="task-list">
             <!-- Example of task with progress, start date, importance -->
-            <div class="task-item important highlight">
+            <div class="task-item highlight">
                 <div class="task-description">
                     Task NO.1 - Make CICD Pipeline
                 </div>
+                <div class="task-progress">
+                    <div class="task-progress-bar" style="width: 50%;"></div>
+                </div>
                 <div class="task-date">
-                    <strong>Start Date:</strong> 2025-02-01
+                    <strong>Start Date:</strong> {{ startDate }} <!-- Dynamic Date -->
                 </div>
                 <div class="task-mention">
-                    <strong>Mentioned By:</strong> John Doe
+                    <strong>Mentioned By:</strong> {{ mentionedBy }} <!-- Dynamic Mention -->
                 </div>
                 <div class="task-actions">
                     <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i> Edit</a>
@@ -192,11 +213,14 @@
                 <div class="task-description">
                     Task NO.2 - Project Report
                 </div>
+                <div class="task-progress">
+                    <div class="task-progress-bar" style="width: 30%;"></div>
+                </div>
                 <div class="task-date">
-                    <strong>Start Date:</strong> 2025-02-05
+                    <strong>Start Date:</strong> {{ startDate }}
                 </div>
                 <div class="task-mention">
-                    <strong>Mentioned By:</strong> Jane Smith
+                    <strong>Mentioned By:</strong> {{ mentionedBy }}
                 </div>
                 <div class="task-actions">
                     <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i> Edit</a>
