@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - TCS-ION TO DO App</title>
+    <title>TCS-ION Project Planner: Track, Manage, Achieve!</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -32,6 +32,8 @@
             margin-bottom: 30px;
             text-align: center;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .logo-container {
@@ -52,8 +54,6 @@
             padding: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            position: relative;
-            z-index: 5;
         }
 
         .task-list {
@@ -106,13 +106,6 @@
             font-size: 1rem;
             color: #7f8c8d;
             margin-top: 5px;
-        }
-
-        .task-mentioned-by {
-            font-size: 1rem;
-            color: #7f8c8d;
-            margin-top: 5px;
-            font-weight: 600;
         }
 
         .task-actions {
@@ -187,7 +180,6 @@
             align-items: center;
             font-size: 2rem;
             cursor: pointer;
-            z-index: 10;
         }
 
         .footer {
@@ -197,7 +189,6 @@
             color: #7f8c8d;
         }
 
-        /* Mobile responsive */
         @media (max-width: 768px) {
             .todo-container {
                 padding: 20px;
@@ -219,11 +210,6 @@
             .task-progress {
                 height: 6px;
             }
-
-            .floating-icons img {
-                width: 30px;
-                height: 30px;
-            }
         }
     </style>
 </head>
@@ -234,7 +220,7 @@
         <img src="https://evessio.s3.amazonaws.com/customer/f6ac7efa-3821-45db-b7e9-604a1025db1f/event/d3d85cc9-ac6d-456d-8352-454ef5ba5451/media/309157e4-profile_TCS-logo-1024x768-1-optimized.jpg_Large.webp" alt="TCS-iON Logo">
     </div>
 
-    <h1>TCS-ION Internship Project To Do List</h1>
+    <h1>TCS-ION Project Planner: Track, Manage, Achieve!</h1>
 
     <!-- New task form -->
     <div class="new-task-form">
@@ -262,7 +248,7 @@
                     <div class="task-progress-bar" style="width: 50%"></div>
                 </div>
                 <div class="task-start-date">Start Date: 26/01/2025</div>
-                <div class="task-mentioned-by">Mentioned By: Debashish Roy</div>
+                <div class="task-start-date">Mentioned By: Debashish Roy</div>
                 <div class="task-actions">
                     <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/1"><i class="fas fa-trash"></i></a>
@@ -277,7 +263,7 @@
                     <div class="task-progress-bar" style="width: 30%"></div>
                 </div>
                 <div class="task-start-date">Start Date: 01/02/2025</div>
-                <div class="task-mentioned-by">Mentioned By: Debashish Roy</div>
+                <div class="task-start-date">Mentioned By: Debashish Roy</div>
                 <div class="task-actions">
                     <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/2"><i class="fas fa-trash"></i></a>
@@ -287,7 +273,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 To-Do List App | Created by Your Team</p>
+        <p>&copy; 2025 To-Do List App | Created by Yash Gujrathi</p>
     </div>
 
     <!-- Floating Add Task Button -->
@@ -298,3 +284,4 @@
 </body>
 
 </html>
+
