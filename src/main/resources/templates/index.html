@@ -4,14 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - TCS-ION TO DO App</title>
+    <title>To-Do List - TCS-ION To Do App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f6f9;
+            background: #f9f9f9;
             color: #333;
             padding: 40px;
             display: flex;
@@ -24,6 +29,7 @@
             font-size: 2.5rem;
             color: #34495e;
             margin-bottom: 30px;
+            text-align: center;
             font-weight: 600;
         }
 
@@ -34,6 +40,7 @@
 
         .logo-container img {
             max-width: 250px;
+            height: auto;
         }
 
         .todo-container {
@@ -46,28 +53,31 @@
             margin-bottom: 30px;
         }
 
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
         .task-item {
             background: #f1f1f1;
             padding: 20px;
             border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
         .task-item:hover {
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .task-item.important {
-            background-color: #ffbc00;
-            color: white;
-            border-left: 8px solid #e74c3c;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .task-item.highlight {
-            background-color: #81c7ff; /* Soft Blue Highlight */
+            background: #f39c12;
             color: white;
+            border-left: 8px solid #e74c3c;
         }
 
         .task-description {
@@ -84,34 +94,35 @@
 
         .task-progress-bar {
             height: 100%;
-            background-color: #2ecc71; /* Green for Progress */
+            background-color: #2ecc71;
             border-radius: 6px;
-        }
-
-        .task-actions a {
-            color: #3498db;
-            text-decoration: none;
-            font-size: 1.5rem;
-            margin-right: 15px;
-        }
-
-        .task-actions a:hover {
-            color: #2c3e50;
-        }
-
-        .task-actions a.delete {
-            color: #e74c3c;
-        }
-
-        .task-actions a.edit {
-            color: #f39c12;
         }
 
         .task-date,
         .task-mention {
             font-size: 1rem;
             color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 15px;
             margin-top: 10px;
+        }
+
+        .task-actions a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .task-actions a.delete {
+            color: #e74c3c;
+        }
+
+        .task-actions a.edit:hover {
+            color: #f39c12;
         }
 
         .new-task-form {
@@ -124,42 +135,77 @@
             max-width: 500px;
         }
 
-        .new-task-form input[type="text"],
-        .new-task-form select {
+        .new-task-form select,
+        .new-task-form input[type="text"] {
             padding: 14px;
             font-size: 1.2rem;
             border-radius: 8px;
             border: 1px solid #ccc;
+            outline: none;
             width: 100%;
+            max-width: 100%;
         }
 
         .new-task-form input[type="submit"] {
-            background: linear-gradient(90deg, #3498db, #2ecc71);
             padding: 14px 40px;
-            color: white;
+            background-color: #2ecc71;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
             font-size: 1.3rem;
             cursor: pointer;
-            border-radius: 50px;
-            border: none;
+            width: 100%;
+            max-width: 100%;
             transition: background-color 0.3s;
         }
 
         .new-task-form input[type="submit"]:hover {
-            transform: scale(1.05);
-            background: linear-gradient(90deg, #2ecc71, #3498db);
+            background-color: #27ae60;
         }
 
         .footer {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px 0;
-            margin-top: 30px;
+            margin-top: 40px;
             text-align: center;
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+
+        .add-task-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
         }
 
         @media (max-width: 768px) {
+            .todo-container {
+                padding: 20px;
+                max-width: 90%;
+            }
+
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+
+            .new-task-form input[type="text"] {
+                font-size: 1.1rem;
+            }
+
+            .task-item {
+                padding: 15px;
+            }
+
+            .task-progress {
+                height: 6px;
             }
         }
     </style>
@@ -188,43 +234,41 @@
 
     <div class="todo-container">
         <div class="task-list">
-            <!-- Example of task with progress, start date, importance -->
             <div class="task-item highlight">
                 <div class="task-description">
-                    Task NO.1 - Make CICD Pipeline
+                    🚀 Task NO.1 - Make CICD Pipeline
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 50%;"></div>
                 </div>
                 <div class="task-date">
-                    <strong>Start Date:</strong> {{ startDate }} <!-- Dynamic Date -->
+                    <strong>📅 Start Date:</strong> 26/01/2025
                 </div>
                 <div class="task-mention">
-                    <strong>Mentioned By:</strong> {{ mentionedBy }} <!-- Dynamic Mention -->
+                    <strong>👨‍💻 Mentioned By:</strong> Debashish Roy
                 </div>
                 <div class="task-actions">
-                    <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i> Edit</a>
-                    <a class="delete" href="/todo/delete/1"><i class="fas fa-trash-alt"></i> Delete</a>
+                    <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i> ✏️ Edit</a>
+                    <a class="delete" href="/todo/delete/1"><i class="fas fa-trash-alt"></i> 🗑️ Delete</a>
                 </div>
             </div>
 
-            <!-- Repeat for more tasks -->
             <div class="task-item">
                 <div class="task-description">
-                    Task NO.2 - Project Report
+                    📝 Task NO.2 - Project Report
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 30%;"></div>
                 </div>
                 <div class="task-date">
-                    <strong>Start Date:</strong> {{ startDate }}
+                    <strong>📅 Start Date:</strong> 01/02/2025
                 </div>
                 <div class="task-mention">
-                    <strong>Mentioned By:</strong> {{ mentionedBy }}
+                    <strong>👨‍💻 Mentioned By:</strong> Debashish Roy
                 </div>
                 <div class="task-actions">
-                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i> Edit</a>
-                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash-alt"></i> Delete</a>
+                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i> ✏️ Edit</a>
+                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash-alt"></i> 🗑️ Delete</a>
                 </div>
             </div>
         </div>
