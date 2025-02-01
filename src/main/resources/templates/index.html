@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - TCS-ION To Do App</title>
+    <title>To-Do List - TCS-ION TO DO App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* General reset and body styling */
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +17,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f9f9f9;
+            background: linear-gradient(to bottom right, #74ebd5, #ACB6E5);
             color: #333;
             padding: 40px;
             display: flex;
@@ -60,21 +61,22 @@
         }
 
         .task-item {
-            background: #f1f1f1;
+            background: #fff;
             padding: 20px;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
             gap: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
 
         .task-item:hover {
+            transform: scale(1.03);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .task-item.highlight {
+        .task-item.important {
             background: #f39c12;
             color: white;
             border-left: 8px solid #e74c3c;
@@ -98,8 +100,7 @@
             border-radius: 6px;
         }
 
-        .task-date,
-        .task-mention {
+        .task-start-date {
             font-size: 1rem;
             color: #7f8c8d;
             margin-top: 5px;
@@ -121,7 +122,7 @@
             color: #e74c3c;
         }
 
-        .task-actions a.edit:hover {
+        .task-actions a:hover {
             color: #f39c12;
         }
 
@@ -163,13 +164,6 @@
             background-color: #27ae60;
         }
 
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 1rem;
-            color: #7f8c8d;
-        }
-
         .add-task-btn {
             position: fixed;
             bottom: 20px;
@@ -184,6 +178,13 @@
             align-items: center;
             font-size: 2rem;
             cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1rem;
+            color: #7f8c8d;
         }
 
         @media (max-width: 768px) {
@@ -219,6 +220,7 @@
 
     <h1>TCS-ION Internship Project To Do List</h1>
 
+    <!-- New task form -->
     <div class="new-task-form">
         <form action="/todo/add/" method="post">
             <select id="task-select" name="task">
@@ -227,6 +229,7 @@
                 <option value="task3">Task NO.3 - Interim Report</option>
                 <option value="task4">Task NO.4 - Activity Report</option>
             </select>
+
             <input type="text" name="custom-task" placeholder="Enter a custom task" />
             <input type="submit" value="Add Task" />
         </form>
@@ -234,41 +237,32 @@
 
     <div class="todo-container">
         <div class="task-list">
-            <div class="task-item highlight">
+            <!-- Example of task with progress, start date, and importance -->
+            <div class="task-item important">
                 <div class="task-description">
-                    🚀 Task NO.1 - Make CICD Pipeline
+                    Task NO.1 - Make CICD Pipeline <span>🚀</span>
                 </div>
                 <div class="task-progress">
-                    <div class="task-progress-bar" style="width: 50%;"></div>
+                    <div class="task-progress-bar" style="width: 50%"></div>
                 </div>
-                <div class="task-date">
-                    <strong>📅 Start Date:</strong> 26/01/2025
-                </div>
-                <div class="task-mention">
-                    <strong>👨‍💻 Mentioned By:</strong> Debashish Roy
-                </div>
+                <div class="task-start-date">Start Date: 26/01/2025</div>
                 <div class="task-actions">
-                    <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i> Edit</a>
-                    <a class="delete" href="/todo/delete/1"><i class="fas fa-trash-alt"></i> Delete</a>
+                    <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i></a>
+                    <a class="delete" href="/todo/delete/1"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
 
             <div class="task-item">
                 <div class="task-description">
-                    📝 Task NO.2 - Project Report
+                    Task NO.2 - Project Report <span>📑</span>
                 </div>
                 <div class="task-progress">
-                    <div class="task-progress-bar" style="width: 30%;"></div>
+                    <div class="task-progress-bar" style="width: 30%"></div>
                 </div>
-                <div class="task-date">
-                    <strong>📅 Start Date:</strong> 01/02/2025
-                </div>
-                <div class="task-mention">
-                    <strong>👨‍💻 Mentioned By:</strong> Debashish Roy
-                </div>
+                <div class="task-start-date">Start Date: 01/02/2025</div>
                 <div class="task-actions">
-                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i> Edit</a>
-                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash-alt"></i> Delete</a>
+                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i></a>
+                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
         </div>
@@ -276,6 +270,11 @@
 
     <div class="footer">
         <p>&copy; 2025 To-Do List App | Created by Your Team</p>
+    </div>
+
+    <!-- Floating Add Task Button -->
+    <div class="add-task-btn">
+        <i class="fas fa-plus"></i>
     </div>
 
 </body>
