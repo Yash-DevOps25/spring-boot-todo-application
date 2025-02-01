@@ -80,19 +80,44 @@
         }
 
         /* Unique Backgrounds for Task Types */
+        .task-item.cicd-pipeline {
+            background: #fff3e0; /* Light orange for CI/CD Pipeline */
+            border-left: 8px solid #ffa726;
+        }
+
+        .task-item.project-report {
+            background: #e3f2fd; /* Light blue for Project Report */
+            border-left: 8px solid #42a5f5;
+        }
+
         .task-item.activity-report {
             background: #ffebee; /* Light red for Activity Report */
             border-left: 8px solid #ef5350;
         }
 
         .task-item.interim-report {
-            background: #e3f2fd; /* Light blue for Interim Report */
-            border-left: 8px solid #42a5f5;
+            background: #e8f5e9; /* Light green for Interim Report */
+            border-left: 8px solid #66bb6a;
+        }
+
+        .task-item.pre-assessment {
+            background: #f3e5f5; /* Light purple for Pre-Assessment */
+            border-left: 8px solid #ab47bc;
+        }
+
+        .task-item.recorded-webinar {
+            background: #e0f7fa; /* Light cyan for Recorded Webinar */
+            border-left: 8px solid #26c6da;
         }
 
         .task-item.project-test {
-            background: #e8f5e9; /* Light green for Project Test and Viva */
-            border-left: 8px solid #66bb6a;
+            background: #fffde7; /* Light yellow for Project Test */
+            border-left: 8px solid #ffee58;
+        }
+
+        .task-item.viva {
+            background: #fbe9e7; /* Light red for Viva */
+            border-left: 8px solid #ff7043;
         }
 
         .task-description {
@@ -259,9 +284,14 @@
             </div>
             <div class="form-group">
                 <select id="task-type" name="task-type">
+                    <option value="cicd-pipeline">Make CI/CD Pipeline</option>
+                    <option value="project-report">Project Report</option>
                     <option value="activity-report">Activity Report</option>
                     <option value="interim-report">Interim Report</option>
-                    <option value="project-test">Project Test and Viva</option>
+                    <option value="pre-assessment">Pre-Assessment</option>
+                    <option value="recorded-webinar">Recorded Webinar</option>
+                    <option value="project-test">Project Test</option>
+                    <option value="viva">Viva</option>
                 </select>
             </div>
             <input type="submit" value="Add Task">
@@ -271,9 +301,9 @@
     <!-- Task List -->
     <div class="todo-container">
         <div class="task-list">
-            <div class="task-item activity-report">
+            <div class="task-item cicd-pipeline">
                 <div class="task-description">
-                    Task NO.1 - Activity Report <span>📊</span>
+                    Task NO.1 - Make CI/CD Pipeline <span>🚀</span>
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 50%"></div>
@@ -286,9 +316,9 @@
                 </div>
             </div>
 
-            <div class="task-item interim-report">
+            <div class="task-item project-report">
                 <div class="task-description">
-                    Task NO.2 - Interim Report <span>📑</span>
+                    Task NO.2 - Project Report <span>📑</span>
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 30%"></div>
@@ -301,9 +331,9 @@
                 </div>
             </div>
 
-            <div class="task-item project-test">
+            <div class="task-item activity-report">
                 <div class="task-description">
-                    Task NO.3 - Project Test and Viva <span>🎓</span>
+                    Task NO.3 - Activity Report <span>📊</span>
                 </div>
                 <div class="task-progress">
                     <div class="task-progress-bar" style="width: 70%"></div>
@@ -313,6 +343,21 @@
                 <div class="task-actions">
                     <a href="/todo/edit/3"><i class="fas fa-pencil-alt"></i></a>
                     <a class="delete" href="/todo/delete/3"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
+
+            <div class="task-item interim-report">
+                <div class="task-description">
+                    Task NO.4 - Interim Report <span>📝</span>
+                </div>
+                <div class="task-progress">
+                    <div class="task-progress-bar" style="width: 40%"></div>
+                </div>
+                <div class="task-start-date">Start Date: 15/02/2025</div>
+                <div class="task-start-date">Mentioned By: Debashish Roy</div>
+                <div class="task-actions">
+                    <a href="/todo/edit/4"><i class="fas fa-pencil-alt"></i></a>
+                    <a class="delete" href="/todo/delete/4"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
         </div>
