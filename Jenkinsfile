@@ -1,76 +1,38 @@
 pipeline {
     agent any
-
     environment {
-        DOCKER_IMAGE = 'yashguj20/spring-boot-todo-app' // Docker Hub username and repository name
-        REGISTRY = 'docker.io'
-        GIT_URL = 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64' // Set JAVA_HOME to Java 17 path
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
     }
-
-    tools {
-        maven 'Apache Maven 3.8.7' // Maven version specified in Jenkins
-    }
-
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout') {
             steps {
-                git url: "$GIT_URL", branch: 'main'
+                // Clone the repository from GitHub
+                git branch: 'main', url: 'https://github.com/Yash-DevOps25/spring-boot-todo-application.git'
             }
         }
-
         stage('Build') {
             steps {
-                script {
-                    // Clean and install using Maven
-                    sh 'mvn clean install'
-                }
+                // Use Maven to build the Spring Boot project
+                sh 'mvn clean package'
             }
         }
-
-        stage('Test') {
-            steps {
-                script {
-                    // Run unit tests with Maven
-                    sh 'mvn test'
-                }
-            }
-        }
-
-        stage('Docker Build') {
+        stage('Docker Build & Push') {
             steps {
                 script {
                     // Build Docker image
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    sh 'docker build -t your-dockerhub-yashguj20/spring-boot-todo-app .'
+                    
+                    // Login to DockerHub and push the image
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker push your-dockerhub-username/spring-boot-todo-app'
                 }
             }
         }
-
-        stage('Docker Login') {
+        stage('Deploy') {
             steps {
-                script {
-                    // Log in to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
-                    }
-                }
+                // Deploy the Docker container (example using Docker Compose)
+                sh 'docker-compose up -d'
             }
-        }
-
-        stage('Docker Push') {
-            steps {
-                script {
-                    // Push Docker image to the registry
-                    sh "docker push ${DOCKER_IMAGE}"
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            // Perform any post actions if needed
-            echo 'Pipeline execution finished.'
         }
     }
 }
