@@ -8,11 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* Add the improved styles here */
-
+        /* Global Styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f6f9; /* Light grey background */
+            background-color: #f4f6f9;
             color: #333;
             padding: 40px;
             display: flex;
@@ -60,6 +59,17 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
+        .task-item.important {
+            background-color: #f39c12;
+            color: white;
+            border-left: 8px solid #e74c3c;
+        }
+
+        .task-item.highlight {
+            background-color: #2ecc71;
+            color: white;
+        }
+
         .task-actions a {
             color: #3498db;
             text-decoration: none;
@@ -73,6 +83,17 @@
 
         .task-actions a.delete {
             color: #e74c3c;
+        }
+
+        .task-actions a.edit {
+            color: #f39c12;
+        }
+
+        .task-date,
+        .task-mention {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-top: 10px;
         }
 
         .new-task-form {
@@ -149,10 +170,16 @@
 
     <div class="todo-container">
         <div class="task-list">
-            <!-- Example of task with progress, start date, and importance -->
-            <div class="task-item">
+            <!-- Example of task with progress, start date, importance -->
+            <div class="task-item important highlight">
                 <div class="task-description">
                     Task NO.1 - Make CICD Pipeline
+                </div>
+                <div class="task-date">
+                    <strong>Start Date:</strong> 2025-02-01
+                </div>
+                <div class="task-mention">
+                    <strong>Mentioned By:</strong> John Doe
                 </div>
                 <div class="task-actions">
                     <a href="/todo/edit/1"><i class="fas fa-pencil-alt"></i> Edit</a>
@@ -161,6 +188,21 @@
             </div>
 
             <!-- Repeat for more tasks -->
+            <div class="task-item">
+                <div class="task-description">
+                    Task NO.2 - Project Report
+                </div>
+                <div class="task-date">
+                    <strong>Start Date:</strong> 2025-02-05
+                </div>
+                <div class="task-mention">
+                    <strong>Mentioned By:</strong> Jane Smith
+                </div>
+                <div class="task-actions">
+                    <a href="/todo/edit/2"><i class="fas fa-pencil-alt"></i> Edit</a>
+                    <a class="delete" href="/todo/delete/2"><i class="fas fa-trash-alt"></i> Delete</a>
+                </div>
+            </div>
         </div>
     </div>
 
